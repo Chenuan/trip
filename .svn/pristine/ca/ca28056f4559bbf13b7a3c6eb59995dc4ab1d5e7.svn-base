@@ -1,0 +1,13 @@
+//
+//  SinglePicCell.h
+//  Trip1
+//
+//  Created by ccyy on 15/7/6.
+//  Copyright (c) 2015年 kevin. All rights reserved.
+//
+
+#import "BaseCollectionViewCell.h"
+
+@interface SinglePicCell : BaseCollectionViewCell
+@property (nonatomic, retain) UIImageView *imageView2;
+@end

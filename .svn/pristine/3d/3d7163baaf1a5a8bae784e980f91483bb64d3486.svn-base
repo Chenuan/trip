@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>上海</key>
+	<string>3/12</string>
+	<key>拉萨</key>
+	<string>3/508</string>
+	<key>南京</key>
+	<string>3/14</string>
+	<key>哈尔滨</key>
+	<string>3/198</string>
+	<key>厦门</key>
+	<string>3/62</string>
+	<key>成都</key>
+	<string>3/48</string>
+	<key>杭州</key>
+	<string>3/26</string>
+	<key>西安</key>
+	<string>3/117</string>
+	<key>三亚</key>
+	<string>3/205</string>
+	<key>丽江</key>
+	<string>3/110</string>
+	<key>青岛</key>
+	<string>3/131</string>
+	<key>昆明</key>
+	<string>3/72</string>
+	<key>广州</key>
+	<string>3/61</string>
+	<key>大连</key>
+	<string>3/15</string>
+	<key>大理</key>
+	<string>3/108</string>
+	<key>北京</key>
+	<string>3/1</string>
+	<key>武汉</key>
+	<string>3/79</string>
+	<key>长沙</key>
+	<string>3/69</string>
+	<key>苏州</key>
+	<string>3/13</string>
+	<key>天津</key>
+	<string>3/11</string>
+</dict>
+</plist>

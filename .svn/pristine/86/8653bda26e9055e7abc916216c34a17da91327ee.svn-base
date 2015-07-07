@@ -1,0 +1,141 @@
+//
+//  FoodPicListCollectionViewCell.m
+//  Trip1
+//
+//  Created by lanou on 15/6/28.
+//  Copyright © 2015年 kevin. All rights reserved.
+//
+
+#import "FoodPicListCollectionViewCell.h"
+#import "BaseImageView.h"
+@interface FoodPicListCollectionViewCell ()<UIScrollViewDelegate>
+@property (nonatomic, retain) UIScrollView *scrollView;
+
+@end
+
+
+@implementation FoodPicListCollectionViewCell
+-(void)dealloc
+{
+
+    [_image release];
+    [_scrollView release];
+
+
+    [_imageView2 release];
+    [super dealloc];
+}
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+
+        
+        self.scrollView = [[UIScrollView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+        
+        self.scrollView.maximumZoomScale = 2;
+        self.scrollView.minimumZoomScale = 1;
+        self.scrollView.alwaysBounceVertical = NO;
+        self.scrollView.delegate = self;
+        [self.contentView addSubview:self.scrollView];
+        
+        [_scrollView release];
+        
+
+        self.imageView2 =[[[BaseImageView alloc] initWithFrame:[[UIScreen mainScreen]bounds]]autorelease] ;
+
+        [self.scrollView addSubview:_imageView2];
+        self.imageView2.contentMode = UIViewContentModeScaleAspectFit;
+
+
+
+        
+        //这里是保存图片手势
+        self.imageView2.userInteractionEnabled = YES;
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPress:)];
+        [self.imageView2 addGestureRecognizer:longPress];
+        longPress.minimumPressDuration = 1;
+
+      //  NSLog(@"加了一个手势到cell上");
+        
+    }
+    return self;
+    
+}
+
+//-(BaseImageView *)imageView2
+//{
+//    if (_imageView2 == nil) {
+//        _imageView2 = [[BaseImageView alloc]init];
+//        [self.scrollView addSubview:_imageView2];
+//    }
+//    return [[_imageView2 retain]autorelease];
+//}
+//-(void)setImage:(UIImage *)image
+//{
+//    if (_image != image) {
+//        [_image release];
+//        _image = [image retain];
+//        
+//    }
+//    self.imageView2.image = image;
+//    [self.imageView2 sizeToFit];
+//    self.scrollView.contentSize = image.size;
+//
+//}
+-(void)backToNormalFrame
+{
+    self.scrollView.zoomScale = 1;
+}
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.imageView2;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x,(self.imageView2.frame.size.height - self.scrollView.frame.size.height) /2);
+    
+}
+
+
+-(void)longPress:(UILongPressGestureRecognizer *)longPress
+{
+    if (longPress.state == UIGestureRecognizerStateBegan) {
+        longPress.enabled = NO;
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"图片" message:@"存到手机上"delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"保存", nil];
+        [alert show];
+        [alert release];
+    }
+
+}
+-(void)alertView:( UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [alertView dismissWithClickedButtonIndex:0 animated:YES];
+    }else{
+         UIImageWriteToSavedPhotosAlbum(self.imageView2.image, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
+    }
+}
+
+
+//实现imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:方法
+
+- (void)imageSavedToPhotosAlbum:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    NSString *message = @"呵呵";
+    if (!error) {
+        message = @"成功保存到相册";
+    }else
+    {
+     message = [error description];
+    }
+    NSLog(@"message is %@",message);
+}
+
+
+
+
+
+@end
+

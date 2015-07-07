@@ -1,0 +1,197 @@
+//
+//  photoCell.m
+//  Trip1
+//
+//  Created by lanou on 15/6/25.
+//  Copyright (c) 2015年 kevin. All rights reserved.
+//
+
+#import "photoCell.h"
+#import "BaseImageView.h"
+
+@interface photoCell()<UIScrollViewDelegate>
+//@property (nonatomic,retain) UIScrollView *scroll;
+@property (nonatomic,retain,readwrite) UITapGestureRecognizer *doubleTap;
+@end
+@implementation photoCell
+
+-(void)dealloc
+{
+    [_doubleTap release];
+    [_scrollView release];
+//    [_scroll release];
+    [_imgv release];
+    [super dealloc];
+}
+
+
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        
+        self.backgroundColor = [UIColor blackColor];
+        self.scrollView = [[[UIScrollView alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+        
+        self.scrollView.maximumZoomScale = 2;
+        self.scrollView.minimumZoomScale = 1;
+        self.scrollView.alwaysBounceVertical = NO;
+        
+        self.scrollView.decelerationRate = 0.5;
+        
+        self.scrollView.delegate = self;
+//        self.scrollView.directionalLockEnabled= YES;//设置只能一个方向滚动
+       
+        [self.contentView addSubview:self.scrollView];
+//        [_scrollView release];
+        
+//        BaseImageView *imageV = [[BaseImageView alloc] initWithFrame:[[UIScreen mainScreen]bounds] ] ;
+//        imageV.backgroundColor = [UIColor blackColor];
+//        imageV.userInteractionEnabled = YES;
+//        imageV.backgroundColor = [UIColor blackColor];
+//        imageV.contentMode = UIViewContentModeScaleAspectFit;
+//        self.imgv = imageV;
+//        [self.contentView addSubview:imageV];
+//        [imageV release];
+    
+        BaseImageView *imageV = [[BaseImageView alloc] initWithFrame:[[UIScreen mainScreen]bounds] ] ;
+        imageV.userInteractionEnabled = YES;
+        imageV.contentMode = UIViewContentModeScaleAspectFit;
+        self.imgv = imageV;
+        [self.scrollView addSubview:imageV];
+        [imageV release];
+        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+        [doubleTap setNumberOfTapsRequired:2];
+        [self.contentView addGestureRecognizer:doubleTap];
+        [doubleTap release];
+        
+        self.doubleTap = doubleTap;
+    
+    }
+    return self;
+}
+
+-(void)doubleTap:(UITapGestureRecognizer *)tap
+{
+    if (self.scrollView.zoomScale == 2) {
+        self.scrollView.zoomScale = 1;
+    }
+    else{
+        self.scrollView.zoomScale = 2;
+    }
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.imgv;
+}
+
+
+-(void)backToNormalFrame
+{
+    self.scrollView.zoomScale = 1;
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+//    if (self.scrollView.zooming && scrollView.contentSize.width <= [[UIScreen mainScreen] bounds].size.width)
+//    {
+//        self.scrollView.contentOffset = CGPointMake((self.imgv.frame.size.width - self.scrollView.frame.size.width) /2,(self.imgv.frame.size.height - self.scrollView.frame.size.height) /2);
+//        
+//    }
+    
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    NSLog(@"%f",[self imageHeight]);
+    if (([self imageHeight]) <= [[UIScreen mainScreen] bounds].size.height) {
+        self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x,(self.imgv.frame.size.height - self.scrollView.frame.size.height) /2);
+    }
+    else{
+        self.scrollView.directionalLockEnabled = YES;
+    }
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    
+//    NSLog(@"y = %f",self.scrollView.contentOffset.y);
+//    NSLog(@"%f,%f",self.scrollView.contentSize.width,self.scrollView.contentSize.height);
+//    
+//    CGFloat y =  (self.imgv.frame.size.height - self.scrollView.frame.size.height) /2;
+//
+//    if (self.scrollView.contentOffset.y < (self.scrollView.contentSize.height) * [self distanceHeightScale] * 0.5)
+//    {
+//        y = ((self.scrollView.contentSize.height) * [self distanceHeightScale]) * 0.5;
+//        NSLog(@"yyyyyyyyy = %f",y);
+//        [UIView animateWithDuration:0.3 animations:^{
+//            self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x,y );
+//            
+//        }];
+//        return;
+//    }
+//    else if (self.scrollView.contentOffset.y > (self.scrollView.contentSize.height - self.scrollView.frame.size.height - (self.scrollView.contentSize.height) * [self distanceHeightScale] * 0.5))
+//    {
+//        y = (self.scrollView.contentSize.height - self.scrollView.frame.size.height - (self.scrollView.contentSize.height) * [self distanceHeightScale] * 0.5);
+//        NSLog(@"kdjflsk= %f",y);
+//        [UIView animateWithDuration:0.3 animations:^{
+//            self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x,y );
+//        }];
+//        return;
+//    }
+//    
+//    [UIView animateWithDuration:0.3 animations:^{
+//        self.scrollView.contentOffset = CGPointMake(self.scrollView.contentOffset.x,y );
+//    }];
+
+}
+
+-(CGFloat)distanceHeightScale
+{
+    CGFloat scaleHeight = self.imgv.image.size.height /self.imgv.image.size.width;
+    CGFloat imageHeight = self.scrollView.frame.size.width * scaleHeight;
+    
+    CGFloat distanceHeightScale =  imageHeight / self.imgv.frame.size.height;
+    return distanceHeightScale;
+}
+-(CGFloat)imageHeight
+{
+    CGFloat scaleHeight = self.imgv.image.size.height /self.imgv.image.size.width;
+    CGFloat imageHeight = self.scrollView.frame.size.width * scaleHeight;
+    return imageHeight * self.scrollView.maximumZoomScale;
+}
+
+
+//-(void)scrollPinch:(UIPinchGestureRecognizer *)pinch
+//{
+//    if (pinch.state == UIGestureRecognizerStateEnded) {
+//        [self performSelector:@selector(gestureEnd) withObject:nil];
+//        return;
+//    }
+//    self.imgv.transform = CGAffineTransformScale(self.imgv.transform, pinch.scale, pinch.scale);
+//    pinch.scale = 1;
+//}
+
+-(void)gestureEnd
+{
+    
+    if (self.imgv.frame.size.width < ([[UIScreen mainScreen] bounds].size.width) * 0.5) {
+        NSLog(@"%@",self.imgv);
+        [UIView animateWithDuration:0.3 animations:^{
+            self.imgv.frame = CGRectMake(0, 0, ([[UIScreen mainScreen] bounds].size.width) * 0.5, ([[UIScreen mainScreen] bounds].size.height) * 0.5);
+            self.imgv.center = self.contentView.center;
+
+        }];
+    }
+    else if(self.imgv.frame.size.width > ([[UIScreen mainScreen] bounds].size.width) * 2)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.imgv.frame = CGRectMake(0, 0, ([[UIScreen mainScreen] bounds].size.width) * 2, ([[UIScreen mainScreen] bounds].size.height) * 2);
+            self.imgv.center = self.contentView.center;
+            
+        }];
+    }
+}
+@end

@@ -1,0 +1,286 @@
+//
+//  MapViewController.m
+//  Trip1
+//
+//  Created by ccyy on 15/6/28.
+//  Copyright (c) 2015年 kevin. All rights reserved.
+//
+
+#import "MapViewController.h"
+//#import <MAMapKit/MAMapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+#import "LocationPoint.h"
+#import <UIKit/UIKit.h>
+
+
+@interface MapViewController ()<MKMapViewDelegate>
+{
+        MKMapView *_mapView;
+}
+
+@end
+
+@implementation MapViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.navigationController setNavigationBarHidden:NO];
+    // Do any additional setup after loading the view.
+    
+    [self initMapView];
+   // NSLog(@"locationArray = %@",self.locationArray);
+     [self addPointLocations];
+}
+//
+-(void)initMapView
+{
+  // [MAMapServices sharedServices].apiKey = @"fd138d7436245a7b3209a41138b8021f";
+    
+    _mapView = [[[MKMapView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds))]autorelease];;
+    //设置地图类型
+    _mapView.mapType = MKMapTypeStandard;
+    
+    //显示用户的位置
+//    _mapView.showsUserLocation = YES;
+    
+    //设置代理
+    _mapView.delegate = self;
+    
+    [self.view addSubview:_mapView];
+    //比例尺
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.3, 0.3);
+    // 设置地图显示的范围
+    LocationPoint *location = [self.locationArray firstObject];
+    CLLocationCoordinate2D coordinate =   CLLocationCoordinate2DMake(location.latitude, location.longitude);
+    MKCoordinateRegion region = MKCoordinateRegionMake(coordinate, span);
+    [_mapView setRegion:region];
+    
+     [self addGeodoticPolyLine1];
+   // _mapView.showsLabels = YES;
+    
+    //显示卫星地图
+    //_mapView.mapType = MAMapTypeSatellite;
+    
+  //  [_mapView  setZoomLevel:1/1000 animated:YES];
+}
+//- (CGFloat)metersPerPointForCurrentZoomLevel;
+//{
+//    return 5000000;
+//}
+
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    
+////    MAPointAnnotation *pointAnnotation = [[MAPointAnnotation alloc] init];
+////    pointAnnotation.coordinate = CLLocationCoordinate2DMake(39.989631, 116.481018);
+////    pointAnnotation.title = @"方恒国际";
+////    pointAnnotation.subtitle = @"阜通东大街6号";
+////    
+////    [_mapView addAnnotation:pointAnnotation];
+////    
+////    LocationPoint *location = self.locationArray[1];
+////    MAPointAnnotation *pointAnnotation1 = [[MAPointAnnotation alloc] init];
+////    pointAnnotation1.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude);
+////    pointAnnotation1.title = @"方恒国际";
+////    pointAnnotation1.subtitle = @"阜通东大街6号";
+////    
+////    [_mapView addAnnotation:pointAnnotation1];
+//    
+//   
+//   // [self addPolyLine];
+//    
+//    [self addGeodoticPolyLine1];
+//}
+
+
+-(void)addPointLocations
+{
+    NSInteger a = self.locationArray.count;
+    if (self.locationArray.count>50) {
+        a = 50;
+    }
+    for (int i = 0; i < a; i++) {
+        LocationPoint *location = self.locationArray[i];
+        if (![location.title isEqualToString:@""]) {
+            MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
+            pointAnnotation.coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude);
+            pointAnnotation.title = location.title;
+            
+            [_mapView addAnnotation:pointAnnotation];
+            [pointAnnotation release];
+        }
+        
+    }
+    
+}
+
+//实现 <MAMapViewDelegate> 协议中的 mapView:viewForAnnotation:回调函数，设置标注样式。如下所示：
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[MKPointAnnotation class]])
+    {
+        static NSString *pointReuseIndetifier = @"pointReuseIndetifier";
+        MKPinAnnotationView *annotationView = (MKPinAnnotationView *)[ mapView dequeueReusableAnnotationViewWithIdentifier:pointReuseIndetifier];
+        if (annotationView == nil)
+        {
+            annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:pointReuseIndetifier]autorelease];
+        }
+        annotationView.canShowCallout= YES;       //设置气泡可以弹出，默认为NO
+//        annotationView.animatesDrop = YES;        //设置标注动画显示，默认为NO
+//        annotationView.draggable = YES;        //设置标注可以拖动，默认为NO
+        annotationView.pinColor = MKPinAnnotationColorPurple;
+        return annotationView ;
+    }
+    return nil;
+}
+
+
+//-(void)addPolyLine
+//{
+//    //构造折线数据对象
+//    CLLocationCoordinate2D commonPolylineCoords[4];
+//    commonPolylineCoords[0].latitude = 39.832136;
+//    commonPolylineCoords[0].longitude = 116.34095;
+//    
+//    commonPolylineCoords[1].latitude = 39.832136;
+//    commonPolylineCoords[1].longitude = 116.42095;
+//    
+//    commonPolylineCoords[2].latitude = 39.902136;
+//    commonPolylineCoords[2].longitude = 116.42095;
+//    
+//    commonPolylineCoords[3].latitude = 39.902136;
+//    commonPolylineCoords[3].longitude = 116.44095;
+//    
+//    //构造折线对象
+//    MKPolyline *commonPolyline = [MKPolyline polylineWithCoordinates:commonPolylineCoords count:4];
+//    
+//    //在地图上添加折线对象
+//    [_mapView addOverlay: commonPolyline];
+//}
+
+//继续在ViewController.m文件中，实现<MAMapViewDelegate>协议中的mapView:viewForOverlay:回调函数，设置折线的样式。示例代码如下：
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
+{
+    if ([overlay isKindOfClass:[MKPolyline class]])
+    {
+        MKPolylineView *polylineView = [[[MKPolylineView alloc] initWithPolyline:overlay]autorelease];
+        
+        polylineView.lineWidth = 3.0f;
+        polylineView.strokeColor = [UIColor colorWithRed:1 green:0.2 blue:0.1 alpha:0.6];
+     //  polylineView.lineJoinType = kMALineJoinRound;//连接类型
+     //   polylineView.lineCapType = kMALineCapRound;//端点类型
+        
+        return polylineView;
+    }
+    
+    
+//    //在ViewController.m文件中，实现<MAMapViewDelegate>协议中的mapView:viewForOverlay:回调函数，设置曲线的样式。
+//    if ([overlay isKindOfClass:[MAPolyline class]])
+//    {
+//        MAPolylineView *polylineView = [[MAPolylineView alloc] initWithPolyline:overlay];
+//        
+//        polylineView.lineWidth = 8.f;
+//        polylineView.strokeColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.8];
+//        
+//        return polylineView;
+//    }
+
+    return nil;
+   
+    
+}
+
+
+-(void)addGeodoticPolyLine1{
+    NSInteger c = self.locationArray.count;
+    NSLog(@"c = %ld",c);
+    CLLocationCoordinate2D geodesicCoords[c];
+    for (int i = 0; i < c; i++) {
+        NSLog(@"-----%@",self.locationArray[i]);
+        LocationPoint *location = self.locationArray[i];
+        NSLog(@"location.lat = %f",location.latitude);
+        geodesicCoords[i].latitude = location.latitude;
+        geodesicCoords[i].longitude = location.longitude;
+    }
+
+    //构造大地曲线对象
+    MKGeodesicPolyline *geodesicPolyline = [MKGeodesicPolyline polylineWithCoordinates:geodesicCoords count:c];
+
+    
+    [_mapView addOverlay:geodesicPolyline];
+}
+
+
+
+
+
+//-(void)addGeodoticPolyLine{
+//    CLLocationCoordinate2D geodesicCoords[2];
+//    geodesicCoords[0].latitude = 39.905151;
+//    geodesicCoords[0].longitude = 116.401726;
+//    
+//    geodesicCoords[1].latitude = 38.905151;
+//    geodesicCoords[1].longitude = 70.401726;
+//    //构造大地曲线对象
+//    MKGeodesicPolyline *geodesicPolyline = [MKGeodesicPolyline polylineWithCoordinates:geodesicCoords count:2];
+//    
+//    [_mapView addOverlay:geodesicPolyline];
+//}
+//
+
+//在ViewController.m文件中，实现<MAMapViewDelegate>协议中的mapView:viewForOverlay:回调函数，设置曲线的样式。示例代码如下：
+//
+//-(MAOverlayView *)mapView:(MAMapView *)mapView viewForOverlay:(id <MAOverlay>)overlay
+//{
+//    if ([overlay isKindOfClass:[MAPolyline class]])
+//    {
+//        MAPolylineView *polylineView = [[MAPolylineView alloc] initWithPolyline:overlay];
+//        
+//        polylineView.lineWidth = 8.f;
+//        polylineView.strokeColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.8];
+//        
+//        return polylineView;
+//    }
+//    return nil;
+//}
+//
+-(void)dealloc
+{
+    NSLog(@"地图dealloc方法执行");
+    [_locationArray release];
+    _mapView.showsUserLocation = NO ;
+    _mapView.userTrackingMode = MKUserTrackingModeNone;
+    [_mapView.layer removeAllAnimations];
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_mapView removeOverlays:_mapView.overlays];
+    [_mapView removeFromSuperview];
+    _mapView = nil;
+    _mapView.delegate =  nil;
+     [super dealloc];
+
+}
+
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

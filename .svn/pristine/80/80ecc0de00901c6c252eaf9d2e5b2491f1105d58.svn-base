@@ -1,0 +1,37 @@
+//
+//  PhotosDataByCity.m
+//  Trip1
+//
+//  Created by lanou on 15/6/24.
+//  Copyright (c) 2015年 kevin. All rights reserved.
+//
+
+#import "PhotosDataByCity.h"
+#import "DomesticCity.h"
+#import "DomesticCityData.h"
+#import "LGJHeader.h"
+
+@implementation PhotosDataByCity
++(void)getDataByCityName:(NSString *)cityName andPage:(int)page andModelID:(NSString *)ID arrayBlock:(void(^)(NSMutableArray *array))block
+{
+    
+    NSString *photosHead = [kUrl stringByReplacingOccurrencesOfString:@"/index_places/8/" withString:@"/place/5/"];
+    NSString *scenePath = [NSString stringWithFormat:@"%@%@/photos/?sort=default&start=%d",photosHead,ID,page];
+    
+    [NSString sendAsynRequestGetDataByUrlString:scenePath data:^(NSData *data) {
+        NSMutableArray *sightsArray = [[[NSMutableArray alloc] initWithCapacity:10] autorelease];
+        if (data != nil) {
+            NSError *error = nil;
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            if (error == nil) {
+                NSArray *arr = [dic objectForKey:@"items"];
+                for (NSDictionary *tempDic in arr) {
+                    NSString *photoString = [tempDic objectForKey:@"photo_s"];
+                    [sightsArray addObject:photoString];
+                }
+            }
+        }
+        block(sightsArray);
+    }];
+}
+@end

@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6063297b-bd65-4ea8-b161-b90dc77a6dc9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "6063297b-bd65-4ea8-b161-b90dc77a6dc9" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6063297b-bd65-4ea8-b161-b90dc77a6dc9" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "50D2187F-695C-4422-9E1A-1C4DD80278C4",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6063297b-bd65-4ea8-b161-b90dc77a6dc9" : "trip\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Trip1",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Trip1\/Trip1.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/www.svnchina.com\/svn\/trip",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6063297b-bd65-4ea8-b161-b90dc77a6dc9"
+    }
+  ]
+}
