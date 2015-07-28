@@ -19,7 +19,8 @@
 #import "SceneViewController.h"
 #import "FoodViewController.h"
 #import "FoodListViewController.h"
-
+#import "DomesticCityData.h"
+#import "AFHTTPRequestOperation.h"
 
 @interface AppDelegate ()<UINavigationControllerDelegate>
 {
@@ -71,7 +72,7 @@
     RootViewController *root = [[[RootViewController alloc] init]autorelease];
 
 
-    root.viewControllers = @[recommendNavi,travelNavi,sceneNavi,foodNavi];
+    root.viewControllers = @[foodNavi,travelNavi,sceneNavi,recommendNavi];
 
 
     
@@ -87,40 +88,45 @@
     
     self.window.rootViewController = sideView;
     
-    //加载首页时间设置
-    [NSThread sleepForTimeInterval:2.0];
+#pragma mark 获取城市列表和id，并且读入到plist文件列表里面
+    NSString *str = @"http://api.breadtrip.com/destination/index_places/8/";
+    NSURL *url = [NSURL URLWithString:str];
+    AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc]initWithRequest:[NSURLRequest requestWithURL:url]]autorelease];
+    [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *data =   operation.responseData;
+        NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSArray *dataArray = jsonDic[@"data"];
+//        NSLog(@"dataArray = %@",dataArray);
+        //获取plist文件
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:@"city.plist" ofType:nil];
+        NSMutableDictionary *plistDic =[ [[NSMutableDictionary alloc]initWithContentsOfFile:filePath]autorelease];
+//        NSLog(@"plistDic = %@",plistDic);
+        for (NSDictionary *cityDic in dataArray) {
+            NSString *name = cityDic[@"name"];
+            NSString *cityId   = [NSString stringWithFormat:@"%@/%@",cityDic[@"type"],cityDic[@"id"]];
+            NSLog(@"%@,%@",name,cityId);
+            [plistDic setObject:cityId forKey:name];
+//            NSLog(@"plistDic = %@",plistDic);
+        }
+        //获取应用程序沙盒的Documents目录
+        NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+        NSString *plistPath1 = [paths objectAtIndex:0];
+        //得到完整的文件名
+        NSString *filename=[plistPath1 stringByAppendingPathComponent:@"city.plist"];
+        //输入写入
+        [plistDic writeToFile:filename atomically:YES];
+        //读出来看看
+//        NSMutableDictionary *data1 = [[NSMutableDictionary alloc] initWithContentsOfFile:filename];
+//        NSLog(@"%@", data1);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"获取城市列表网络加载失败");
+    }];
     
-//    //网络模块
-//    // 监听网络状态发生改变的通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkStateChange) name:kReachabilityChangedNotification object:nil];
-//    // 获得Reachability对象
-//    self.reachability = [Reachability reachabilityForInternetConnection];
-//    // 开始监控网络
-//    [self.reachability startNotifier];
-    
-
+    NSOperationQueue *queue = [[[NSOperationQueue alloc]init]autorelease];
+    [queue addOperation:operation];
     return YES;
 }
-//- (void)networkStateChange
-//{
-//    //NSLog(@"网络状态改变了");
-//    [self checkNetworkState];
-//}
-///**
-// *  监测网络状态
-// */
-//- (void)checkNetworkState
-//{
-//    if ([HMNetworkTool isEnableWIFI]||[HMNetworkTool isEnable3G]) {
-//        self.isReachable = YES;
-//        NSLog(@"yes");
-//    } else {
-//        self.isReachable = NO;
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"网路链接异常,请检查网络" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
-//        NSLog(@"no");
-//    }
-//}
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
