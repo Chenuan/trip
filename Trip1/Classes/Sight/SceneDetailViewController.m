@@ -16,7 +16,7 @@
 #import "SceneMapViewController.h"
 #import "SceneMap.h"
 
-#warning 徐
+
 #import "FoodMapViewController.h"
 
 @interface SceneDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate,UIAlertViewDelegate>

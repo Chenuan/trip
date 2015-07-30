@@ -7,7 +7,7 @@
 //
 
 #import "TravelListCell.h"
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+WebCache.h"
 #import <UIKit/UIKit.h>
 @interface TravelListCell ()
 @property (retain, nonatomic) IBOutlet UIImageView *cover_imageView;
@@ -44,30 +44,12 @@
     self.daysLabel.text = [NSString stringWithFormat:@"%lu天",tralist.day_count];
     self.footPointLabel.text = [NSString stringWithFormat:@"%lu足迹",tralist.waypoints];
     self.dateLabel.text = tralist.dateYMD;
-
+    self.cover_imageView.layer.cornerRadius = 8;
+    self.cover_imageView.layer.masksToBounds = YES;
 
     NSURL *url = [NSURL URLWithString:tralist.cover_image];
-    [self.cover_imageView  setImageWithURL:url];
+    [self.cover_imageView  sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"place_location.png"]];
 }
-
-
-
-//+(travelListCell *)cellWithTableView:(UITableView *)tableView
-//{
-//   // static NSString  *cellIndentifier = @"Cell";
-//    travelListCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-//   // [tableView registerClass:[travelListCell class] forCellReuseIdentifier:cellIndentifier];
-//    if (cell == nil) {
-//        cell = [[[NSBundle mainBundle]loadNibNamed:@"travelListCell" owner:self options:nil]firstObject];
-//        NSLog(@"成功添加了一个游记列表里的cell");
-//    }
-//   // NSLog(@"*********");
-//    return cell;
-//}
-
-
-
-
 
 - (void)dealloc {
     [_cover_imageView release];

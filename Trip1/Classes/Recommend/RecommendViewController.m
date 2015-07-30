@@ -26,9 +26,7 @@
 #import "TraCollectionViewCell.h"
 #import "MJRefresh.h"
 
-//=======
-//#import "BaseImageView.h"
-//>>>>>>> .r82
+
 @interface RecommendViewController ()<UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 {
     UIImageView *_hubView;
@@ -36,9 +34,7 @@
 @property (nonatomic,retain) NSMutableArray *array;
 @property (nonatomic,retain) NSString *cityName;
 @property (nonatomic,retain) NSString *BaseID;
-//{
-//    BaseImageView *base;
-//}
+
 @property (retain, nonatomic) IBOutlet UICollectionView *collectionView;
 @end
 
@@ -272,9 +268,8 @@
     
     TraCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"cityCell" forIndexPath:indexPath];
     City *city = self.array[indexPath.row];
-//    UIImageView *imageView1 = [[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 200, 200)]autorelease];
-    [cell.image_view  sd_setImageWithURL:[NSURL URLWithString:city.photo]];
-//    cell.image_view = imageView1;
+    [cell.image_view  sd_setImageWithURL:[NSURL URLWithString:city.photo] placeholderImage:[UIImage imageNamed:@"place_location"]];
+
     NSInteger hot = arc4random()%5000+50;
     cell.cTitleLabel.text = [NSString stringWithFormat:@"最热门图片欣赏 热度:%ld%ld",hot,indexPath.row+1];
     cell.cTitleLabel.font = [UIFont systemFontOfSize:13.0];
@@ -311,7 +306,7 @@
 -(UICollectionViewFlowLayout *)PicListCollectionViewFlowLayout
 {
     UICollectionViewFlowLayout *flowLayout = [[[UICollectionViewFlowLayout alloc]init]autorelease];
-    flowLayout.itemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 330);
+    flowLayout.itemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 400);
     flowLayout.minimumInteritemSpacing = 3;
     flowLayout.minimumLineSpacing = 3;
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;

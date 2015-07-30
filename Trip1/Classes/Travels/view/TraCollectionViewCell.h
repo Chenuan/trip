@@ -7,9 +7,10 @@
 //
 
 #import "BaseCollectionViewCell.h"
+#import "BaseImageView.h"
 
 @interface TraCollectionViewCell : BaseCollectionViewCell
-@property (nonatomic,retain) UIImageView *image_view;
+@property (nonatomic,retain) BaseImageView *image_view;
 @property (nonatomic,retain) UILabel *cTitleLabel;
 
 @end

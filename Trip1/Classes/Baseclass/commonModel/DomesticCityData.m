@@ -1,10 +1,4 @@
-//
-//  DomesticCityData.m
-//  MianBao
-//
-//  Created by lanou on 15/6/19.
-//  Copyright (c) 2015年 kevin. All rights reserved.
-//
+
 
 #import "DomesticCityData.h"
 #import "Url.h"
@@ -51,16 +45,10 @@ static DomesticCityData *shareData = nil;
     NSError *error = nil;
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     
-    //如果有错误，直接返回
+    //如果有错误
     if (error) {
-#warning -网络这里要进行优化
         NSLog(@"网络请求数据错误");
         NSLog(@"%@",error);
-//        UIAlertView *aler = [[UIAlertView alloc]initWithTitle:@"网络连接错误" message:@"请核实网络" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [aler show];
-//        [aler release];
-
-        
         return;
     }
     _domesticCityDic = [[NSMutableDictionary alloc] initWithCapacity:5];//初始化字典
@@ -80,11 +68,5 @@ static DomesticCityData *shareData = nil;
     //初始化keys
     _domesticCityKeys = [[NSMutableArray alloc] initWithArray:_domesticCityDic.allKeys];
 }
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex == 0) {
-//        [self loadingDomesticCityDic];
-//        
-//    }
-//}
+
 @end

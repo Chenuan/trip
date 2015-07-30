@@ -76,7 +76,7 @@
         [view removeFromSuperview];
     }
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10,10, 135, 135)];
-    label.text = @" Powered By：徐杰鸿，廖广军，陈源   联系：chenhuaizhe@gmail.com";
+    label.text = @" Powered By：徐杰鸿，廖广军，陈源        联系：chenhuaizhe@gmail.com";
     label.backgroundColor = [UIColor whiteColor];
     label.numberOfLines = 0;
     label.font = [UIFont systemFontOfSize:13.0];
@@ -106,8 +106,7 @@
 
 - (void) clearAction:(UIButton*)button
 {
-    //1.清除memory的图片，
-    [[SDImageCache sharedImageCache] clearDisk];
+
     UIAlertView *alert =  [[UIAlertView alloc]initWithTitle:@"提示" message:@"点击确定清除" delegate:self cancelButtonTitle:@"返回" otherButtonTitles:@"确定", nil];
 
     [alert show];
@@ -115,6 +114,17 @@
     [_parentVC lew_dismissPopupView];
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        sleep(1);
+        //1.清除memory的图片，
+        [[SDImageCache sharedImageCache] clearDisk];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"已清除" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert show];
+        [alert release];
+    }
+}
 
 + (instancetype) defaultPopuView
 {

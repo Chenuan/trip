@@ -1,10 +1,4 @@
-//
-//  TravelNoteViewController.m
-//  Trip1
-//
-//  Created by lanou on 15/6/20.
-//  Copyright (c) 2015年 kevin. All rights reserved.
-//
+
 
 #import "TravelViewController.h"
 #import "TravelListCell.h"
@@ -14,7 +8,6 @@
 #import "DetailTravelController.h"
 #import "MBProgressHUD.h"
 #import "UIImageView+WebCache.h"
-//#define BaseUrl @"http://api.breadtrip.com/destination/place/3/12/trips/"
 #import "TraCollectionViewCell.h"
 #import "MJRefresh.h"
 #import "LeftViewController.h"
@@ -26,8 +19,6 @@
 #import "LewPopupViewAnimationDrop.h"
 #import "PopupView.h"
 
-
-
 #define XJHWidth ([[UIScreen mainScreen] bounds].size.width)
 #define XJHHeight ([[UIScreen mainScreen] bounds].size.height)
 
@@ -36,10 +27,11 @@
     UIView *_hubView;
     UICollectionView *_collectionView;
 }
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
 
+@property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain,nonatomic) NSMutableArray *travelListArray;
 @property (nonatomic,retain) NSString *cityName;
+
 @end
 
 @implementation TravelViewController
@@ -118,7 +110,7 @@
 
 -(void)changeView
 {
-   // NSLog(@"-----");
+   
     [C_DataHandle changeView:self.tableView andView:_collectionView inSuperView:self.view];
 
 }
@@ -133,7 +125,7 @@
  
     //添加collectionView
     [self initCollectionView];
-  //  [self.view bringSubviewToFront:self.tableView];
+//    [self.view bringSubviewToFront:self.tableView];
     //添加活动指示器
     _hubView = [[[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds]autorelease];
     _hubView.backgroundColor = [UIColor grayColor];
@@ -161,8 +153,8 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"TravelListCell" bundle:nil] forCellReuseIdentifier:@"Cell"];
     
     //添加上拉更新控件
-    [self.tableView addLegendFooterWithRefreshingTarget:self refreshingAction:@selector(footerRereshing1)];
-    [_collectionView addLegendFooterWithRefreshingTarget:self refreshingAction:@selector(footerRereshing2)];
+    [self.tableView addLegendFooterWithRefreshingTarget:self refreshingAction:@selector(footerRereshing:)];
+    [_collectionView addLegendFooterWithRefreshingTarget:self refreshingAction:@selector(footerRereshing:)];
     
 }
 
@@ -191,7 +183,7 @@
 
 -(void)refreshBaseID
 {
-    //---------------------------------------------
+    
     //获取应用程序沙盒的Documents目录
     NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     NSString *plistPath1 = [paths objectAtIndex:0];
@@ -200,13 +192,11 @@
     
     //读出来看看
     NSMutableDictionary *dataDic = [[NSMutableDictionary alloc] initWithContentsOfFile:filename];
-    NSLog(@"datadic  = %@", dataDic);
+    NSLog(@"datadic  = %ld", dataDic.count);
     NSString *string  = [dataDic objectForKey: self.cityName];
     self.BaseID = [NSString stringWithFormat:@"http://api.breadtrip.com/destination/place/%@/trips/",string];
-  //  NSLog(@"self.baseid = %@",self.BaseID);
+    NSLog(@"self.baseid = %@",self.BaseID);
     
-    //------------------------------------------------------
-
 }
 
 #pragma -mark 通知执行的方法
@@ -223,7 +213,6 @@
         [self.travelListArray removeAllObjects];
         [self refreshBaseID];
         [self getDataByUrlString:self.BaseID];
-      //  NSLog(@"--------------");
        
     }
     
@@ -232,15 +221,12 @@
 #pragma -mark 懒加载
 -(NSMutableArray *)travelListArray
 {
-   // NSLog(@"-------");
     if (_travelListArray == nil) {
-       // _first = YES;
-       // NSLog(@"-------");
         _travelListArray = [[NSMutableArray alloc]init];
-      //  [self getDataByUrlString:BaseUrl];
     }
     return [_travelListArray retain];
 }
+
 #pragma -mark 数据
 -(void)getDataByUrlString:(NSString *)urlString
 {
@@ -266,7 +252,7 @@
          [self.tableView reloadData];
         [_collectionView reloadData];
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"发生错误！%@",error);
+        NSLog(@"请求数据发生错误！%@",error);
     }];
    
     NSOperationQueue *queue = [[[NSOperationQueue alloc] init]autorelease];
@@ -279,16 +265,26 @@
 -(NSInteger)tableView:( UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   //  NSLog(@"游记列表的行数是 %lu",self.travelListArray.count);
+    if (self.travelListArray.count==0) {
+        return 1;
+    }else{
     return self.travelListArray.count;
+    }
 }
 
 //cell
 -( UITableViewCell *)tableView:( UITableView *)tableView cellForRowAtIndexPath:( NSIndexPath *)indexPath
 {
+    if (self.travelListArray.count==0) {
+        UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"acell"];
+        cell.textLabel.text = @"该城市暂无精选游记，等待优质游记中";
+        return cell;
+    }else{
     TravelListCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     TravelList *tra = self.travelListArray[indexPath.row];
     cell.tralist = tra ;
     return cell;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -298,11 +294,14 @@
 //选中cell之后
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DetailTravelController *dvc = [[[DetailTravelController alloc]init]autorelease];
-    dvc.tra = self.travelListArray[indexPath.row];
-     [dvc setHidesBottomBarWhenPushed:YES];
-    [self.navigationController pushViewController:dvc animated:YES];
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.travelListArray.count != 0) {
+        DetailTravelController *dvc = [[[DetailTravelController alloc]init]autorelease];
+        dvc.tra = self.travelListArray[indexPath.row];
+        [dvc setHidesBottomBarWhenPushed:YES];
+        [self.navigationController pushViewController:dvc animated:YES];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
 }
 
 
@@ -314,30 +313,41 @@
 //*********************** 下拉刷新 *******************
 //    http://api.breadtrip.com/destination/place/3/12/trips/?start=20&sign=6b62f9be134770becb64064b5d3af37c
 
-- (void)footerRereshing1
+- (void)footerRereshing:(UIScrollView *)view
 {
-    
+    NSInteger a = self.travelListArray.count;
     sleep(1);
    static int lastCount= 20;
    static int i = 1 ;
     NSString *urlStr = [NSString stringWithFormat:@"%@?start=%d",self.BaseID,lastCount];
+//    NSLog(@"urlStr = %@",urlStr);
     [self getDataByUrlString:urlStr];
     i++;
     lastCount= 20*i;
-    [self.tableView.footer endRefreshing];
+    if ([self.tableView.footer isRefreshing]) {
+        [self.tableView.footer endRefreshing];
+    }
+    if ([_collectionView.footer isRefreshing]) {
+        [_collectionView .footer endRefreshing];
+    }
+    NSInteger b = self.travelListArray.count;
+    if (a==b) {
+        [self.tableView.footer noticeNoMoreData];
+        [_collectionView.footer noticeNoMoreData];
+}
 }
 
-- (void)footerRereshing2
-{
-    sleep(1);
-    static int lastCount= 20;
-    static int i = 1 ;
-    NSString *urlStr = [NSString stringWithFormat:@"%@?start=%d",self.BaseID,lastCount];
-    [self getDataByUrlString:urlStr];
-    i++;
-    lastCount= 20*i;
-    [_collectionView.footer endRefreshing];
-}
+//- (void)footerRereshing2
+//{
+//    sleep(1);
+//    static int lastCount= 20;
+//    static int i = 1 ;
+//    NSString *urlStr = [NSString stringWithFormat:@"%@?start=%d",self.BaseID,lastCount];
+//    [self getDataByUrlString:urlStr];
+//    i++;
+//    lastCount= 20*i;
+//    [_collectionView.footer endRefreshing];
+//}
 
 #pragma -mark 左右侧滑动作按键
 -(void)cityChoose
@@ -350,31 +360,19 @@
 
 -(void)settings
 {
-//    AppDelegate *delegate = [[UIApplication sharedApplication]delegate];
-//    YRSideViewController *sideViewController = delegate.sideViewController;
-//    [sideViewController showRightViewController:YES];
+    AppDelegate *delegate = [[UIApplication sharedApplication]delegate];
+    YRSideViewController *sideViewController = delegate.sideViewController;
+    [sideViewController showRightViewController:YES];
     
-    PopupView *view = [PopupView defaultPopuView];
-    view.parentVC = self;
-    [self lew_presentPopupView:view animation:[LewPopupViewAnimationDrop new] dismissed:^{
-        
-    }];
+//    PopupView *view = [PopupView defaultPopuView];
+//    view.parentVC = self;
+//    [self lew_presentPopupView:view animation:[LewPopupViewAnimationDrop new] dismissed:^{
+//        
+//    }];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (void)dealloc {
     [_BaseID release];
@@ -388,4 +386,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
 @end

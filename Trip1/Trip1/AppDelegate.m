@@ -30,8 +30,7 @@
 
 @implementation AppDelegate
 -(void)dealloc{
-//    [_reachability release];
-//    [_reachability stopNotifier];
+
     [_sideViewController release];
     [_window release];
     [super dealloc];
@@ -88,6 +87,11 @@
     
     self.window.rootViewController = sideView;
     
+    
+    
+    
+    
+    
 #pragma mark 获取城市列表和id，并且读入到plist文件列表里面
     NSString *str = @"http://api.breadtrip.com/destination/index_places/8/";
     NSURL *url = [NSURL URLWithString:str];
@@ -104,7 +108,7 @@
         for (NSDictionary *cityDic in dataArray) {
             NSString *name = cityDic[@"name"];
             NSString *cityId   = [NSString stringWithFormat:@"%@/%@",cityDic[@"type"],cityDic[@"id"]];
-            NSLog(@"%@,%@",name,cityId);
+//            NSLog(@"%@,%@",name,cityId);
             [plistDic setObject:cityId forKey:name];
 //            NSLog(@"plistDic = %@",plistDic);
         }
@@ -113,6 +117,7 @@
         NSString *plistPath1 = [paths objectAtIndex:0];
         //得到完整的文件名
         NSString *filename=[plistPath1 stringByAppendingPathComponent:@"city.plist"];
+//        NSLog(@"%@",filename);
         //输入写入
         [plistDic writeToFile:filename atomically:YES];
         //读出来看看

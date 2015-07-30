@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8121.17" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -15,45 +16,49 @@
                 <rect key="frame" x="0.0" y="0.0" width="366" height="109"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uLR-lK-Lyf">
-                        <rect key="frame" x="8" y="9" width="100" height="96"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uLR-lK-Lyf">
+                        <rect key="frame" x="8" y="8" width="100" height="93"/>
+                        <color key="backgroundColor" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="100" id="vNA-Ol-UBd"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="155天" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G2z-6M-fbN">
-                        <rect key="frame" x="250" y="91" width="22" height="13"/>
+                        <rect key="frame" x="269" y="86" width="22" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="pZH-Vt-0tY"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="22足迹" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="623-Nl-9Fg">
-                        <rect key="frame" x="194" y="83" width="54" height="21"/>
+                        <rect key="frame" x="238" y="86" width="26" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="RJP-DH-oK5"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" misplaced="YES" text="20人喜欢" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5iE-Jp-yfN">
-                        <rect key="frame" x="138" y="90" width="58" height="11"/>
+                        <rect key="frame" x="194" y="85" width="34" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="yb4-FL-xWw"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="2015年5月22日" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qM-tC-hMR">
-                        <rect key="frame" x="302" y="90" width="57" height="10"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.79999999999999982" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="2015年5月22日" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qM-tC-hMR">
+                        <rect key="frame" x="296" y="85" width="57" height="10"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="10" id="HWz-J5-2Tf"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="8"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -64,6 +69,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 <constraints>
                     <constraint firstItem="uLR-lK-Lyf" firstAttribute="leading" secondItem="NM1-fC-9n1" secondAttribute="leadingMargin" id="1KT-zI-s7F"/>
                     <constraint firstItem="sY5-5T-9EA" firstAttribute="leading" secondItem="uLR-lK-Lyf" secondAttribute="trailing" constant="15" id="5zj-x7-Brv"/>
@@ -78,6 +84,7 @@
                     <constraint firstItem="5qM-tC-hMR" firstAttribute="leading" secondItem="G2z-6M-fbN" secondAttribute="trailing" constant="5" id="gii-bz-ahH"/>
                     <constraint firstItem="G2z-6M-fbN" firstAttribute="leading" secondItem="623-Nl-9Fg" secondAttribute="trailing" constant="5" id="l5N-ub-Rzw"/>
                     <constraint firstAttribute="bottomMargin" secondItem="623-Nl-9Fg" secondAttribute="bottom" constant="5" id="sTO-lp-dAk"/>
+                    <constraint firstItem="5qM-tC-hMR" firstAttribute="baseline" secondItem="5iE-Jp-yfN" secondAttribute="firstBaseline" id="tly-DN-kLx"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -38,7 +38,7 @@
     self.localTimeLabel.text = detailTra.local_time;
     self.likeLabel.text = [NSString stringWithFormat:@"%lu",detailTra.recommendations];
     self.commentLabel.text = [NSString stringWithFormat:@"%lu",detailTra.comments];
-    [self.photoImageView sd_setImageWithURL:[NSURL URLWithString: detailTra.photo] placeholderImage:nil options:SDWebImageLowPriority  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [self.photoImageView sd_setImageWithURL:[NSURL URLWithString: detailTra.photo] placeholderImage:[UIImage imageNamed:@"place_location"] options:SDWebImageLowPriority  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
 
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         self.photoImageView.image = image;

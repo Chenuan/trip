@@ -12,8 +12,6 @@
 	<dict>
 		<key>6063297b-bd65-4ea8-b161-b90dc77a6dc9</key>
 		<string>http://www.svnchina.com/svn/trip</string>
-		<key>E1831D7A9BBB3FB57C0D0E410134705968B755AB</key>
-		<string>https://github.com/cchhyy/trip.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Trip1/Trip1.xcodeproj</string>
@@ -21,22 +19,20 @@
 	<dict>
 		<key>6063297b-bd65-4ea8-b161-b90dc77a6dc9</key>
 		<string>../../..</string>
-		<key>E1831D7A9BBB3FB57C0D0E410134705968B755AB</key>
-		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/cchhyy/trip.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E1831D7A9BBB3FB57C0D0E410134705968B755AB</string>
+	<string>6063297b-bd65-4ea8-b161-b90dc77a6dc9</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E1831D7A9BBB3FB57C0D0E410134705968B755AB</string>
+			<string>6063297b-bd65-4ea8-b161-b90dc77a6dc9</string>
 			<key>IDESourceControlWCCName</key>
 			<string>trip</string>
 		</dict>

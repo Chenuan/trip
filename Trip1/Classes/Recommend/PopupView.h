@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PopupView : UIView
+@interface PopupView : UIView <UIAlertViewDelegate>
 @property (nonatomic,retain) UIView *innerView;
 @property (nonatomic,retain) UIViewController *parentVC;
 

@@ -23,4 +23,8 @@
 
 @property (nonatomic,retain) NSString *fullPath;//kurl+url的处理结果kUrl里面/index_places/8/ 替换为url
 
+//@property (nonatomic,retain)   NSString * cityID; //城市ID
+//@property (nonatomic,retain)   NSString * cityType;//城市类型
+
+
 @end
